@@ -1,0 +1,23 @@
+{
+    "title": "Graph-R1: Towards Agentic GraphRAG Framework via End-to-end Reinforcement Learning",
+    "authors": [
+        "Haoran Luo",
+        "Haihong E",
+        "Guanting Chen",
+        "Qika Lin",
+        "Yikai Guo",
+        "Fangzhi Xu",
+        "Zemin Kuang",
+        "Meina Song",
+        "Xiaobao Wu",
+        "Yifan Zhu",
+        "Luu Anh Tuan"
+    ],
+    "summary": "Retrieval-Augmented Generation (RAG) mitigates hallucination in LLMs by incorporating external knowledge, but relies on chunk-based retrieval that lacks structural semantics. GraphRAG methods improve RAG by modeling knowledge as entity-relation graphs, but still face challenges in high construction cost, fixed one-time retrieval, and reliance on long-context reasoning and prompt design. To address these challenges, we propose Graph-R1, the first agentic GraphRAG framework via end-to-end reinforcement learning (RL). It introduces lightweight knowledge hypergraph construction, models retrieval as a multi-turn agent-environment interaction, and optimizes the agent process via an end-to-end reward mechanism. Experiments on standard RAG datasets show that Graph-R1 outperforms traditional GraphRAG and RL-enhanced RAG methods in reasoning accuracy, retrieval efficiency, and generation quality. Our software and data are publicly available at https://github.com/LHRLAB/Graph-R1.",
+    "published": "2025-07-29T15:01:26Z",
+    "pdf_url": "https://arxiv.org/pdf/2507.21892v2",
+    "entry_id": "http://arxiv.org/abs/2507.21892v2",
+    "categories": [
+        "cs.CL"
+    ]
+}

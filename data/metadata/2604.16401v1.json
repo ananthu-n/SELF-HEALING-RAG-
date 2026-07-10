@@ -1,0 +1,18 @@
+{
+    "title": "GraphRAG-Router: Learning Cost-Efficient Routing over GraphRAGs and LLMs with Reinforcement Learning",
+    "authors": [
+        "Dongzhe Fan",
+        "Chuanhao Ji",
+        "Zimu Wang",
+        "Tong Chen",
+        "Qiaoyu Tan"
+    ],
+    "summary": "Graph-based retrieval-augmented generation (GraphRAG) has recently emerged as a powerful paradigm for knowledge-intensive question answering, especially for tasks that require structured evidence organization and multi-hop reasoning. However, existing GraphRAG systems are typically built in a one-size-fits-all manner, relying on a fixed retrieval framework and a single, often large and costly, generator LLM for all queries. This static design limits their ability to adapt to the complexity of varying questions and often incurs unnecessary computational cost. To fill in the gap, we propose GraphRAG-Router, a cost-efficient framework that adopts a hierarchical routing strategy to coordinate heterogeneous GraphRAGs and generator LLMs. Specifically, GraphRAG-Router is first warmed up through supervised fine-tuning and then optimized with a two-stage reinforcement learning procedure, whose second stage introduces a curriculum cost-aware reward to encourage difficulty-aware and economical generator allocation. Extensive experiments on six general-domain and multi-hop QA benchmarks show that GraphRAG-Router consistently outperforms state-of-the-art baselines, reducing the overuse of large LLMs by nearly 30% while maintaining strong generalization capability.",
+    "published": "2026-03-31T09:53:20Z",
+    "pdf_url": "https://arxiv.org/pdf/2604.16401v1",
+    "entry_id": "http://arxiv.org/abs/2604.16401v1",
+    "categories": [
+        "cs.IR",
+        "cs.AI"
+    ]
+}

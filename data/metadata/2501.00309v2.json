@@ -1,0 +1,32 @@
+{
+    "title": "Retrieval-Augmented Generation with Graphs (GraphRAG)",
+    "authors": [
+        "Haoyu Han",
+        "Yu Wang",
+        "Harry Shomer",
+        "Kai Guo",
+        "Jiayuan Ding",
+        "Yongjia Lei",
+        "Mahantesh Halappanavar",
+        "Ryan A. Rossi",
+        "Subhabrata Mukherjee",
+        "Xianfeng Tang",
+        "Qi He",
+        "Zhigang Hua",
+        "Bo Long",
+        "Tong Zhao",
+        "Neil Shah",
+        "Amin Javari",
+        "Yinglong Xia",
+        "Jiliang Tang"
+    ],
+    "summary": "Retrieval-augmented generation (RAG) is a powerful technique that enhances downstream task execution by retrieving additional information, such as knowledge, skills, and tools from external sources. Graph, by its intrinsic \"nodes connected by edges\" nature, encodes massive heterogeneous and relational information, making it a golden resource for RAG in tremendous real-world applications. As a result, we have recently witnessed increasing attention on equipping RAG with Graph, i.e., GraphRAG. However, unlike conventional RAG, where the retriever, generator, and external data sources can be uniformly designed in the neural-embedding space, the uniqueness of graph-structured data, such as diverse-formatted and domain-specific relational knowledge, poses unique and significant challenges when designing GraphRAG for different domains. Given the broad applicability, the associated design challenges, and the recent surge in GraphRAG, a systematic and up-to-date survey of its key concepts and techniques is urgently desired. Following this motivation, we present a comprehensive and up-to-date survey on GraphRAG. Our survey first proposes a holistic GraphRAG framework by defining its key components, including query processor, retriever, organizer, generator, and data source. Furthermore, recognizing that graphs in different domains exhibit distinct relational patterns and require dedicated designs, we review GraphRAG techniques uniquely tailored to each domain. Finally, we discuss research challenges and brainstorm directions to inspire cross-disciplinary opportunities. Our survey repository is publicly maintained at https://github.com/Graph-RAG/GraphRAG/.",
+    "published": "2024-12-31T06:59:35Z",
+    "pdf_url": "https://arxiv.org/pdf/2501.00309v2",
+    "entry_id": "http://arxiv.org/abs/2501.00309v2",
+    "categories": [
+        "cs.IR",
+        "cs.CL",
+        "cs.LG"
+    ]
+}

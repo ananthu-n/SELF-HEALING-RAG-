@@ -1,0 +1,16 @@
+{
+    "title": "Self-Routing RAG: Binding Selective Retrieval with Knowledge Verbalization",
+    "authors": [
+        "Di Wu",
+        "Jia-Chen Gu",
+        "Kai-Wei Chang",
+        "Nanyun Peng"
+    ],
+    "summary": "Selective retrieval aims to make retrieval-augmented generation (RAG) more efficient and reliable by skipping retrieval when an LLM's parametric knowledge suffices. Despite promising results, existing methods are constrained by a binary design choice: either retrieve from a single external source or skip retrieval and let the LLM directly produce the final answer. We argue that this fallback underestimates the model's knowledge and obscures the more general multi-source decision problem that arises in practical systems. We propose Self-Routing RAG (SR-RAG), which casts selective retrieval as knowledge source selection and treats the LLM itself as a first-class knowledge source. SR-RAG learns to select an appropriate knowledge source, optionally verbalize parametric knowledge, and answer using the selected source, all within a single left-to-right generation pass. SR-RAG further augments source selection by combining LLM-based uncertainty with a flexible external policy datastore to improve decision calibration. Across four benchmarks and three 7B-class LLMs, SR-RAG outperforms a strong selective retrieval baseline by 8.5%/2.1%/4.7% while performing 26%/40%/21% fewer retrievals, and it achieves favorable accuracy-latency trade-offs without dataset-specific threshold tuning.",
+    "published": "2025-04-01T17:59:30Z",
+    "pdf_url": "https://arxiv.org/pdf/2504.01018v3",
+    "entry_id": "http://arxiv.org/abs/2504.01018v3",
+    "categories": [
+        "cs.CL"
+    ]
+}

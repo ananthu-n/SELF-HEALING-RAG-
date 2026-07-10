@@ -1,0 +1,19 @@
+{
+    "title": "OMD-GraphRAG: Enhancing GraphRAG with Ontology-Guided Extraction, Multi-Dimensional Clustering and Dual-Channel Fusion",
+    "authors": [
+        "Jie Wang",
+        "Honghua Huang",
+        "Xi Ge",
+        "Jianhui Su",
+        "Wen Liu",
+        "Shiguo Lian"
+    ],
+    "summary": "Retrieval-Augmented Generation (RAG) systems face significant challenges in complex reasoning, multi-hop queries, and domain-specific QA. While existing GraphRAG frameworks have made progress in structural knowledge organization, they still have limitations in knowledge extraction precision, community report integrity, and retrieval performance. This paper proposes OMD-GraphRAG, an enhanced framework built upon open-source GraphRAG. The framework introduces three core innovations: (1) Ontology-Guided Knowledge Extraction that uses predefined Schema to guide LLMs in accurately identifying domain-specific entities and relations; (2) Multi-Dimensional Community Clustering Strategy that improves community completeness through alignment completion, attribute-based clustering, and multi-hop relationship clustering; (3) Dual-Channel Graph Retrieval Fusion that balances QA accuracy and performance through hybrid graph and community retrieval. Evaluation results on MultiHop-RAG benchmark show that OMD-GraphRAG outperforms mainstream open source solutions (e.g., LightRAG) in comprehensive F1 scores, particularly in inference and temporal queries.",
+    "published": "2026-03-26T08:13:43Z",
+    "pdf_url": "https://arxiv.org/pdf/2603.25152v3",
+    "entry_id": "http://arxiv.org/abs/2603.25152v3",
+    "categories": [
+        "cs.AI",
+        "cs.IR"
+    ]
+}

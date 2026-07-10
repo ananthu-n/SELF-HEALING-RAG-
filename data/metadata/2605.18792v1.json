@@ -1,0 +1,21 @@
+{
+    "title": "Trust or Abstain? A Self-Aware RAG Approach",
+    "authors": [
+        "Xi Zhu",
+        "Ziqi Wang",
+        "Kai Mei",
+        "Wujiang Xu",
+        "Minghao Guo",
+        "Bangji Yang",
+        "Jiajun Fan",
+        "Dimitris N. Metaxas"
+    ],
+    "summary": "Retrieval-augmented generation (RAG) improves large language models (LLMs) by incorporating external evidence, but it also introduces knowledge conflicts when retrieved contextual knowledge (CK) and parametric knowledge (PK) disagree or are both unreliable. Existing approaches mainly coordinate which source to use, without explicitly asking whether each answer path is correct. We argue that faithful RAG requires LLM self-awareness, namely the ability to recognize the limits of its own knowledge and reasoning. To ground this problem, we construct a model-specific, ground-truth-aligned knowledge-conflict benchmark by evaluating LLM backbones on PK-only and CK-conditioned answer paths over approximately 69K query-context instances per backbone, drawn from five conflict-QA datasets. We then introduce SABER, a Self-Aware Belief Estimator for RAG that requires no LLM fine-tuning. SABER combines a self-prior with PK-side and CK-side conditional reasoning representations from multi-trace inference, then estimates reliability beliefs with two lightweight predictors to drive a 4-cell decision over trust PK, trust CK, trust either, or abstain. Across four LLM backbones, SABER improves end-to-end accuracy and conflict-specific faithfulness over ten inference-time and fine-tuning baselines, with the largest gains on conflict-heavy datasets. Under abstention, SABER's risk-coverage curve Pareto-dominates every prompt-based abstainer, providing a tunable balance between coverage and answer risk. Our code is available at https://github.com/xizhu1022/SABER.",
+    "published": "2026-05-11T05:44:27Z",
+    "pdf_url": "https://arxiv.org/pdf/2605.18792v1",
+    "entry_id": "http://arxiv.org/abs/2605.18792v1",
+    "categories": [
+        "cs.IR",
+        "cs.CL"
+    ]
+}

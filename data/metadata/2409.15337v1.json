@@ -1,0 +1,21 @@
+{
+    "title": "Revisiting the Solution of Meta KDD Cup 2024: CRAG",
+    "authors": [
+        "Jie Ouyang",
+        "Yucong Luo",
+        "Mingyue Cheng",
+        "Daoyu Wang",
+        "Shuo Yu",
+        "Qi Liu",
+        "Enhong Chen"
+    ],
+    "summary": "This paper presents the solution of our team APEX in the Meta KDD CUP 2024: CRAG Comprehensive RAG Benchmark Challenge. The CRAG benchmark addresses the limitations of existing QA benchmarks in evaluating the diverse and dynamic challenges faced by Retrieval-Augmented Generation (RAG) systems. It provides a more comprehensive assessment of RAG performance and contributes to advancing research in this field. We propose a routing-based domain and dynamic adaptive RAG pipeline, which performs specific processing for the diverse and dynamic nature of the question in all three stages: retrieval, augmentation, and generation. Our method achieved superior performance on CRAG and ranked 2nd for Task 2&3 on the final competition leaderboard. Our implementation is available at this link: https://github.com/USTCAGI/CRAG-in-KDD-Cup2024.",
+    "published": "2024-09-09T07:28:14Z",
+    "pdf_url": "https://arxiv.org/pdf/2409.15337v1",
+    "entry_id": "http://arxiv.org/abs/2409.15337v1",
+    "categories": [
+        "cs.IR",
+        "cs.AI",
+        "cs.CL"
+    ]
+}

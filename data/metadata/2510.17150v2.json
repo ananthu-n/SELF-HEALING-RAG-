@@ -1,0 +1,16 @@
+{
+    "title": "OmniVIC: A Self-Improving Variable Impedance Controller with Vision-Language In-Context Learning for Safe Robotic Manipulation",
+    "authors": [
+        "Heng Zhang",
+        "Wei-Hsing Huang",
+        "Gokhan Solak",
+        "Arash Ajoudani"
+    ],
+    "summary": "We present OmniVIC, a universal variable impedance controller (VIC) enhanced by a vision language model (VLM), which improves safety and adaptation in any contact-rich robotic manipulation task to enhance safe physical interaction. Traditional VIC have shown advantages when the robot physically interacts with the environment, but lack generalization in unseen, complex, and unstructured safe interactions in universal task scenarios involving contact or uncertainty. To this end, the proposed OmniVIC interprets task context derived reasoning from images and natural language and generates adaptive impedance parameters for a VIC controller. Specifically, the core of OmniVIC is a self-improving Retrieval-Augmented Generation(RAG) and in-context learning (ICL), where RAG retrieves relevant prior experiences from a structured memory bank to inform the controller about similar past tasks, and ICL leverages these retrieved examples and the prompt of current task to query the VLM for generating context-aware and adaptive impedance parameters for the current manipulation scenario. Therefore, a self-improved RAG and ICL guarantee OmniVIC works in universal task scenarios. The impedance parameter regulation is further informed by real-time force/torque feedback to ensure interaction forces remain within safe thresholds. We demonstrate that our method outperforms baselines on a suite of complex contact-rich tasks, both in simulation and on real-world robotic tasks, with improved success rates and reduced force violations. OmniVIC takes a step towards bridging high-level semantic reasoning and low-level compliant control, enabling safer and more generalizable manipulation. Overall, the average success rate increases from 27% (baseline) to 61.4% (OmniVIC).",
+    "published": "2025-10-20T04:54:22Z",
+    "pdf_url": "https://arxiv.org/pdf/2510.17150v2",
+    "entry_id": "http://arxiv.org/abs/2510.17150v2",
+    "categories": [
+        "cs.RO"
+    ]
+}

@@ -1,0 +1,31 @@
+project:
+  name: Self-Healing Research Assistant
+
+storage:
+  raw_pdf_dir: data/raw_pdfs
+  processed_dir: data/processed
+  metadata_dir: data/metadata
+  chunks_dir: data/chunks      # rename chunk_dir -> chunks_dir
+
+arxiv:
+  queries:
+    - Retrieval Augmented Generation
+    - Self-RAG
+    - GraphRAG
+    - CRAG
+    - Agentic RAG
+    - Multimodal RAG
+  papers_per_query: 20
+
+chunking:
+  chunk_size: 1000
+  chunk_overlap: 200           # rename overlap -> chunk_overlap
+
+embedding:
+  model: BAAI/bge-large-en-v1.5
+
+vectorstore:
+  collection_name: research_assistant   # rename collection -> collection_name
+
+llm:
+  model: llama3.1

@@ -1,0 +1,17 @@
+{
+    "title": "KG-Infused RAG: Augmenting Corpus-Based RAG with External Knowledge Graphs",
+    "authors": [
+        "Dingjun Wu",
+        "Yukun Yan",
+        "Zhenghao Liu",
+        "Zhiyuan Liu",
+        "Maosong Sun"
+    ],
+    "summary": "Retrieval-Augmented Generation (RAG) improves factual accuracy by grounding responses in external knowledge. However, existing RAG methods either rely solely on text corpora and neglect structural knowledge, or build ad-hoc knowledge graphs (KGs) at high cost and low reliability. To address these issues, we propose KG-Infused RAG, a framework that incorporates pre-existing large-scale KGs into RAG and applies spreading activation to enhance both retrieval and generation. KG-Infused RAG directly performs spreading activation over external KGs to retrieve relevant structured knowledge, which is then used to expand queries and integrated with corpus passages, enabling interpretable and semantically grounded multi-source retrieval. We further improve KG-Infused RAG through preference learning on sampled key stages of the pipeline. Experiments on five QA benchmarks show that KG-Infused RAG consistently outperforms vanilla RAG (by 3.9% to 17.8%). Compared with KG-based approaches such as GraphRAG and LightRAG, our method obtains structured knowledge at lower cost while achieving superior performance. Additionally, integrating KG-Infused RAG with Self-RAG and DeepNote yields further gains, demonstrating its effectiveness and versatility as a plug-and-play enhancement module for corpus-based RAG methods.",
+    "published": "2025-06-11T09:20:02Z",
+    "pdf_url": "https://arxiv.org/pdf/2506.09542v2",
+    "entry_id": "http://arxiv.org/abs/2506.09542v2",
+    "categories": [
+        "cs.CL"
+    ]
+}

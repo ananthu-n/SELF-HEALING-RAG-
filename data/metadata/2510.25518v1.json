@@ -1,0 +1,19 @@
+{
+    "title": "Retrieval Augmented Generation (RAG) for Fintech: Agentic Design and Evaluation",
+    "authors": [
+        "Thomas Cook",
+        "Richard Osuagwu",
+        "Liman Tsatiashvili",
+        "Vrynsia Vrynsia",
+        "Koustav Ghosal",
+        "Maraim Masoud",
+        "Riccardo Mattivi"
+    ],
+    "summary": "Retrieval-Augmented Generation (RAG) systems often face limitations in specialized domains such as fintech, where domain-specific ontologies, dense terminology, and acronyms complicate effective retrieval and synthesis. This paper introduces an agentic RAG architecture designed to address these challenges through a modular pipeline of specialized agents. The proposed system supports intelligent query reformulation, iterative sub-query decomposition guided by keyphrase extraction, contextual acronym resolution, and cross-encoder-based context re-ranking. We evaluate our approach against a standard RAG baseline using a curated dataset of 85 question--answer--reference triples derived from an enterprise fintech knowledge base. Experimental results demonstrate that the agentic RAG system outperforms the baseline in retrieval precision and relevance, albeit with increased latency. These findings suggest that structured, multi-agent methodologies offer a promising direction for enhancing retrieval robustness in complex, domain-specific settings.",
+    "published": "2025-10-29T13:41:36Z",
+    "pdf_url": "https://arxiv.org/pdf/2510.25518v1",
+    "entry_id": "http://arxiv.org/abs/2510.25518v1",
+    "categories": [
+        "cs.AI"
+    ]
+}

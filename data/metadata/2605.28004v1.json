@@ -1,0 +1,17 @@
+{
+    "title": "Beyond Chunk-Local Extraction: Cross-Chunk Graph Augmentation for GraphRAG",
+    "authors": [
+        "Jiaming Zhang",
+        "Yibo Zhao",
+        "Jing Yu",
+        "Jianxiang Yu",
+        "Xiang Li"
+    ],
+    "summary": "GraphRAG extends retrieval-augmented generation by organizing corpora as explicit knowledge graphs, enabling graph-based retrieval for complex question answering. However, existing frameworks extract entities and relations within individual chunks, leaving cross-chunk relations -- those whose evidence spans multiple passages -- systematically absent from the index. Exhaustive LLM-based recovery of such relations is impractical due to the combinatorial explosion of chunk combinations. We present CrossAug, a GNN-guided CROSS-Chunk Graph AUGmentation method that enriches GraphRAG indices with cross-chunk relational structure as an offline step before query-time retrieval. CrossAug derives training supervision through self-supervised graph corruption, uses a topology-aware GNN to score subgraphs for missingness, and applies evidence-grounded LLM completion only to selected high-scoring regions. Experiments on three LLM-based GraphRAG frameworks across four multi-hop and long-document QA benchmarks demonstrate that CrossAug consistently improves performance, confirming the benefit of cross-chunk graph augmentation for retrieval-based question answering. Our code is available at https://github.com/DonFinliani/CrossAug.",
+    "published": "2026-05-27T05:55:53Z",
+    "pdf_url": "https://arxiv.org/pdf/2605.28004v1",
+    "entry_id": "http://arxiv.org/abs/2605.28004v1",
+    "categories": [
+        "cs.CL"
+    ]
+}

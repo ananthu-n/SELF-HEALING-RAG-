@@ -1,0 +1,23 @@
+{
+    "title": "CRAG: Can 3D Generative Models Help 3D Assembly?",
+    "authors": [
+        "Zeyu Jiang",
+        "Sihang Li",
+        "Siqi Tan",
+        "Chenyang Xu",
+        "Juexiao Zhang",
+        "Julia Galway-Witham",
+        "Xue Wang",
+        "Scott A. Williams",
+        "Radu Iovita",
+        "Chen Feng",
+        "Jing Zhang"
+    ],
+    "summary": "Most existing 3D assembly methods treat the problem as pure pose estimation, rearranging observed parts via rigid transformations. In contrast, human assembly naturally couples structural reasoning with holistic shape inference. Inspired by this intuition, we reformulate 3D assembly as a joint problem of assembly and generation. We show that these two processes are mutually reinforcing: assembly provides part-level structural priors for generation, while generation injects holistic shape context that resolves ambiguities in assembly. Unlike prior methods that cannot synthesize missing geometry, we propose CRAG, which simultaneously generates plausible complete shapes and predicts poses for input parts. Extensive experiments demonstrate state-of-the-art performance across in-the-wild objects with diverse geometries, varying part counts, and missing pieces. Project Page: https://ai4ce.github.io/CRAG/",
+    "published": "2026-02-26T05:04:42Z",
+    "pdf_url": "https://arxiv.org/pdf/2602.22629v3",
+    "entry_id": "http://arxiv.org/abs/2602.22629v3",
+    "categories": [
+        "cs.CV"
+    ]
+}
