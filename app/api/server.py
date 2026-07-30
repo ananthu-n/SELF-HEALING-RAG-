@@ -3,7 +3,9 @@ from __future__ import annotations
 import time
 import uuid
 from typing import Any, Optional
-from fastapi import FastAPI, HTTPException, Header, UploadFile, File
+import os
+import datetime
+from fastapi import FastAPI, HTTPException, Header, UploadFile, File, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
@@ -11,7 +13,46 @@ from pydantic import BaseModel, Field
 from app.core.logger import logger
 from app.db.database import init_db, DatabaseManager
 
+
+class QuotaGuard:
+    """Safeguard middleware that cuts off requests if daily free limit or rate limit is reached."""
+    def __init__(self):
+        self.daily_max = int(os.getenv("MAX_DAILY_QUOTA", "500"))
+        self.daily_counter = 0
+        self.last_reset_date = datetime.date.today()
+        self.ip_requests = {}
+
+    def check_and_increment(self, client_ip: str):
+        today = datetime.date.today()
+        if today != self.last_reset_date:
+            self.daily_counter = 0
+            self.last_reset_date = today
+            self.ip_requests.clear()
+
+        if self.daily_counter >= self.daily_max:
+            logger.warning(f"Free Tier Protection Triggered: Daily query limit ({self.daily_max}) reached.")
+            raise HTTPException(
+                status_code=429,
+                detail=f"Free Tier Safety Limit Reached ({self.daily_max} queries/day). API paused until tomorrow to prevent GCP charges."
+            )
+
+        now = time.time()
+        timestamps = [t for t in self.ip_requests.get(client_ip, []) if now - t < 60]
+        if len(timestamps) >= 15:
+            raise HTTPException(
+                status_code=429,
+                detail="Rate limit exceeded (Max 15 requests/minute). Please wait a moment."
+            )
+
+        timestamps.append(now)
+        self.ip_requests[client_ip] = timestamps
+        self.daily_counter += 1
+
+quota_guard = QuotaGuard()
+
+
 _upload_ingestor = None
+
 
 def get_upload_ingestor():
     global _upload_ingestor
@@ -141,11 +182,16 @@ def login_user(req: AuthRequest):
 @app.post("/api/query", response_model=QueryResponse)
 def handle_query(
     req: QueryRequest,
+    request: Request,
     x_user_id: Optional[str] = Header(None, alias="X-User-ID"),
     x_session_id: Optional[str] = Header(None, alias="X-Session-ID"),
 ):
+    client_ip = request.client.host if request.client else "unknown"
+    quota_guard.check_and_increment(client_ip)
+
     if not req.query.strip():
         raise HTTPException(status_code=400, detail="Query cannot be empty.")
+
 
     user_id = x_user_id or req.user_id or "demo_user"
     session_id = x_session_id or req.session_id or f"sess_{uuid.uuid4().hex[:12]}"

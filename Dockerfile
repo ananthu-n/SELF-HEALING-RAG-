@@ -1,5 +1,5 @@
 # Multi-Stage Production Dockerfile for Autonomous Self-Healing Research Assistant
-FROM python:3.11-slim as builder
+FROM python:3.11-slim AS builder
 
 WORKDIR /app
 
@@ -15,7 +15,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
 
 # Final Runtime Image
-FROM python:3.11-slim as runner
+FROM python:3.11-slim AS runner
 
 WORKDIR /app
 
@@ -28,13 +28,14 @@ COPY --from=builder /install /usr/local
 COPY . /app
 
 # Create data directories
-RUN mkdir -p data/qdrant_db data/app_persistence.db
+RUN mkdir -p data/qdrant data
 
-EXPOSE 7860
 EXPOSE 8000
 
 ENV PYTHONUNBUFFERED=1
 ENV HOST=0.0.0.0
-ENV PORT=7860
+ENV PORT=8000
 
 CMD ["python", "main.py"]
+
+

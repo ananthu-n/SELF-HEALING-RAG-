@@ -80,4 +80,5 @@ if __name__ == "__main__":
         run_cli()
     else:
         port_env = int(os.getenv("PORT", 8000))
-        run_server(host="0.0.0.0", port=port_env, reload=True)
+        is_dev = os.getenv("ENV", "production").lower() == "development"
+        run_server(host="0.0.0.0", port=port_env, reload=is_dev)
