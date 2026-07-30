@@ -1,43 +1,80 @@
-# Python
+# ==========================================
+# Self-Healing RAG Platform - .gitignore
+# ==========================================
+
+# 1. Byte-compiled / Optimized / DLL files
 __pycache__/
 *.py[cod]
-*.pyo
-*.pyd
+*$py.class
 *.so
 
-# Virtual environments
+# 2. Virtual Environments & Local Env Secrets
+.env
+.env.*
+!.env.example
 venv/
-.env/
 .venv/
+env/
+ENV/
+env.bak/
+venv.bak/
 
-# IDE
-.vscode/
-.idea/
+# 3. SQLite Databases & Local Persistence
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+data/app_persistence.db
+data/*.db
 
-# Jupyter
-.ipynb_checkpoints/
+# 4. Vector Stores & Indexes (Qdrant & BM25)
+data/qdrant/
+data/qdrant_db/
+qdrant_storage/
+data/bm25/
+*.pkl
 
-# Logs
-*.log
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Model caches
-.huggingface/
-.cache/
-
-# Large generated data
+# 5. Dynamic Data, Extracted Metadata & Downloaded Papers
 data/raw_pdfs/
 data/processed/
 data/chunks/
+data/metadata/
 data/validated_chunks/
 data/embeddings/
 data/embedding_metadata/
 
-# Vector databases
-qdrant_storage/
+# 6. ML Models & Hugging Face Caches
+.cache/
+.huggingface/
+huggingface/
+catboost_info/
 
-# Temporary files
+# 7. Testing & Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.nox/
+.tox/
+
+# 8. Logs & Scratch Artifacts
+*.log
+logs/
+scratch/
 *.tmp
+*.temp
+
+# 9. Editor & IDE Settings
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# 10. Operating System Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db

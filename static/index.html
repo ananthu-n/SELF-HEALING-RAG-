@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autonomous Self-Healing Research Assistant - Enterprise Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css?v=3.0">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Telemetry & Session History Panel -->
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="logo-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                        <polyline points="2 17 12 22 22 17"></polyline>
+                        <polyline points="2 12 12 17 22 12"></polyline>
+                    </svg>
+                </div>
+                <div>
+                    <h2>Self-Healing RAG</h2>
+                    <span class="sub-badge">Enterprise Research OS</span>
+                </div>
+            </div>
+
+            <!-- Global System Telemetry Summary -->
+            <div class="telemetry-section">
+                <h3>Persistent System Health</h3>
+                <div class="global-metrics-grid">
+                    <div class="metric-mini">
+                        <span class="mini-label">Total Queries</span>
+                        <span id="globalTotalQueries" class="mini-val">0</span>
+                    </div>
+                    <div class="metric-mini">
+                        <span class="mini-label">Pass Rate</span>
+                        <span id="globalPassRate" class="mini-val text-success">0%</span>
+                    </div>
+                </div>
+
+                <h3>Query Telemetry</h3>
+
+                <div class="card metric-card">
+                    <span class="card-label">Detected Intent</span>
+                    <div id="intentBadge" class="badge badge-neutral">Awaiting Query</div>
+                </div>
+
+                <div class="card metric-card">
+                    <span class="card-label">Grounding Confidence</span>
+                    <div class="gauge-container">
+                        <div id="gaugeBar" class="gauge-fill" style="width: 0%;"></div>
+                    </div>
+                    <span id="gaugeValue" class="gauge-text">0%</span>
+                </div>
+
+                <div class="card metric-card">
+                    <span class="card-label">Self-Healing Retries</span>
+                    <div class="metric-row">
+                        <span id="retryCount" class="metric-big">0</span>
+                        <span id="healingStatus" class="badge badge-success">Optimal</span>
+                    </div>
+                </div>
+
+                <div class="card metric-card">
+                    <span class="card-label">Failure Diagnostic</span>
+                    <span id="failureType" class="text-secondary">None</span>
+                </div>
+
+                <div class="card metric-card">
+                    <span class="card-label">Execution Latency</span>
+                    <span id="latencyValue" class="metric-big">0.0s</span>
+                </div>
+            </div>
+
+            <!-- Persistent Session History -->
+            <div class="sessions-section">
+                <div class="sessions-header">
+                    <h3>Research Sessions</h3>
+                    <button id="newSessionBtn" class="btn-icon-small" title="Start New Session">+</button>
+                </div>
+                <div id="sessionsList" class="sessions-list">
+                    <div class="session-item active">New Research Thread</div>
+                </div>
+            </div>
+
+            <div class="system-status">
+                <span class="status-dot online"></span>
+                <span>SQLite Telemetry Active (Qdrant + BM25)</span>
+            </div>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="main-content">
+            <header class="top-header">
+                <div>
+                    <h1>Autonomous Research Assistant</h1>
+                    <p>Intent-Aware Multi-Pass RAG with Closed-Loop Self-Healing & Persistence</p>
+                </div>
+                <div class="header-actions">
+                    <button id="authModalBtn" class="user-badge-btn">
+                        <span class="user-dot"></span>
+                        <span id="userDisplay">Sign In / Register</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Query Input Box -->
+            <div class="query-box card">
+                <!-- Knowledge Scope Selection -->
+                <div class="scope-selector-container">
+                    <span class="scope-label">Knowledge Source Scope:</span>
+                    <div class="scope-options">
+                        <label class="scope-chip active" id="scopeHybridLabel">
+                            <input type="radio" name="searchScope" value="hybrid" checked style="display:none;">
+                            <span>🌐 All Sources (arXiv + Custom Uploads)</span>
+                        </label>
+                        <label class="scope-chip" id="scopeCustomLabel">
+                            <input type="radio" name="searchScope" value="custom_only" style="display:none;">
+                            <span>📁 Custom Uploaded Docs Only</span>
+                        </label>
+                        <label class="scope-chip" id="scopeArxivLabel">
+                            <input type="radio" name="searchScope" value="arxiv_only" style="display:none;">
+                            <span>📄 arXiv Papers Only</span>
+                        </label>
+                    </div>
+                </div>
+
+                <form id="queryForm">
+                    <div class="input-wrapper">
+                        <input type="text" id="queryInput" placeholder="Ask any research query (e.g. What is GraphRAG?)" autocomplete="off" required>
+                        <button type="submit" id="submitBtn">
+                            <span>Execute</span>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="22" y1="2" x2="11" y2="13"></line>
+                                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                            </svg>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Quick Presets -->
+                <div class="presets">
+                    <span class="preset-label">Quick Prompts:</span>
+                    <button class="preset-chip" data-query="What is GraphRAG?">What is GraphRAG?</button>
+                    <button class="preset-chip" data-query="Compare Self-RAG vs Corrective RAG (CRAG)">Self-RAG vs CRAG</button>
+                    <button class="preset-chip" data-query="Explain Vectorless RAG architecture">Vectorless RAG</button>
+                </div>
+            </div>
+
+            <!-- Custom Datasource Upload Card -->
+            <div id="dropZone" class="upload-box card">
+                <div class="upload-header">
+                    <h4>Upload Custom Knowledge Datasources (PDF, Word, Text, Markdown, Code, CSV, JSON, Logs)</h4>
+                    <span class="sub-text">Click below or drag & drop files to index into RAG alongside arXiv research papers</span>
+                </div>
+                <form id="uploadForm" class="upload-form">
+                    <div class="file-input-wrapper">
+                        <input type="file" id="fileInput" class="accessible-file-input">
+                        <label for="fileInput" id="selectFileBtn" class="btn-secondary file-picker-label">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="17 8 12 3 7 8"></polyline>
+                                <line x1="12" y1="3" x2="12" y2="15"></line>
+                            </svg>
+                            <span>Choose PDF / File</span>
+                        </label>
+                    </div>
+                    <span id="fileNameDisplay" class="file-name-display">No file selected</span>
+                    <button type="submit" id="uploadBtn" class="btn-primary" disabled>Upload & Index</button>
+                </form>
+                <div id="uploadStatus" class="upload-status hidden"></div>
+            </div>
+
+            <!-- Loading Spinner -->
+            <div id="loadingState" class="card loading-card hidden">
+                <div class="spinner"></div>
+                <div class="loading-text">
+                    <h4 id="loadingStep">Analyzing Query & Intent...</h4>
+                    <p id="loadingSub">Checking Qdrant Dense Vector Store & BM25 Sparse Index...</p>
+                </div>
+            </div>
+
+            <!-- Answer Display Container -->
+            <div id="resultContainer" class="result-container hidden">
+                <div class="card answer-card">
+                    <div class="card-header">
+                        <h3>Generated Research Answer</h3>
+                        <span id="groundedBadge" class="badge badge-success">Grounded Response</span>
+                    </div>
+                    <div id="answerText" class="answer-body"></div>
+                </div>
+
+                <!-- Tabs for Details -->
+                <div class="details-section">
+                    <div class="tabs">
+                        <button class="tab-btn active" data-tab="evidenceTab">Retrieved Evidence Chunks</button>
+                        <button class="tab-btn" data-tab="healingTab">Self-Healing Execution Log</button>
+                        <button class="tab-btn" data-tab="telemetryTab">System Telemetry Audit</button>
+                    </div>
+
+                    <!-- Evidence Tab Content -->
+                    <div id="evidenceTab" class="tab-content active">
+                        <div id="evidenceList" class="evidence-grid"></div>
+                    </div>
+
+                    <!-- Self Healing History Tab Content -->
+                    <div id="healingTab" class="tab-content hidden">
+                        <div id="healingHistory" class="history-list"></div>
+                    </div>
+
+                    <!-- System Telemetry Tab Content -->
+                    <div id="telemetryTab" class="tab-content hidden">
+                        <div id="telemetryDetail" class="telemetry-detail-card"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- User Auth Modal Overlay -->
+    <div id="authModal" class="modal-overlay hidden">
+        <div class="modal-card card">
+            <div class="modal-header">
+                <h3 id="authTitle">Sign In to Self-Healing RAG</h3>
+                <button id="closeAuthModal" class="close-btn">&times;</button>
+            </div>
+            <form id="authForm">
+                <div class="form-group">
+                    <label for="authUsername">Username</label>
+                    <input type="text" id="authUsername" placeholder="Enter your username" required>
+                </div>
+                <div class="form-group">
+                    <label for="authPassword">Password</label>
+                    <input type="password" id="authPassword" placeholder="Enter your password" required>
+                </div>
+                <div id="authError" class="auth-error hidden"></div>
+                <div class="form-actions">
+                    <button type="submit" id="authSubmitBtn" class="btn-primary">Sign In</button>
+                    <button type="button" id="toggleAuthModeBtn" class="btn-secondary">Switch to Register</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js?v=3.0"></script>
+</body>
+</html>
