@@ -236,7 +236,9 @@ Open `http://localhost:8000`.
 ## Docker
 
 ```bash
-docker-compose up -d --build
+docker compose up -d --build
+# Or on older Docker versions:
+# docker-compose up -d --build
 ```
 
 ## Project structure
