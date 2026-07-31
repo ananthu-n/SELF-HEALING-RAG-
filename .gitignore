@@ -22,8 +22,6 @@ venv.bak/
 # 3. SQLite Databases & Local Persistence
 *.db
 *.db-journal
-*.sqlite
-*.sqlite3
 data/app_persistence.db
 data/*.db
 

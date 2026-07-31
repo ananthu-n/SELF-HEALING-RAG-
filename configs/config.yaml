@@ -18,12 +18,7 @@ knowledge:
 arxiv:
   queries:
     - Retrieval Augmented Generation
-    - Self-RAG
-    - GraphRAG
-    - CRAG
-    - Agentic RAG
-    - Multimodal RAG
-  papers_per_query: 20
+  papers_per_query: 1
 
 chunking:
   chunk_size: 1000

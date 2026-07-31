@@ -9,6 +9,12 @@ venv/
 .venv/
 env/
 .env
-data/
+data/raw_pdfs/
+data/processed/
+data/chunks/
+data/metadata/
+data/validated_chunks/
+data/embeddings/
+data/embedding_metadata/
 *.log
 .DS_Store
