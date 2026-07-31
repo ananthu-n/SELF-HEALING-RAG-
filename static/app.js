@@ -134,26 +134,38 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     let isRegisterMode = false;
-    let currentUser = JSON.parse(localStorage.getItem("selfrag_user")) || {
-        user_id: "demo_user",
-        username: "demo_user",
-        api_key: "sk-selfhealing-demo-key"
-    };
-
+    let storedUser = localStorage.getItem("selfrag_user");
+    let currentUser = storedUser ? JSON.parse(storedUser) : null;
     let currentSessionId = "sess_" + Math.random().toString(36).substring(2, 10);
 
-    updateUserUI();
-    fetchSessions();
-    fetchTelemetry();
+    function requireLogin() {
+        if (!currentUser) {
+            authModal.classList.remove("hidden");
+            closeAuthModal.style.display = "none"; // Hide close button
+            document.querySelector(".app-container").style.filter = "blur(4px)";
+            document.querySelector(".app-container").style.pointerEvents = "none";
+            return true;
+        }
+        return false;
+    }
+
+    if (!requireLogin()) {
+        updateUserUI();
+        fetchSessions();
+        fetchTelemetry();
+    }
 
     // Modal Control Events
     authModalBtn.addEventListener("click", () => {
         authModal.classList.remove("hidden");
+        closeAuthModal.style.display = "block"; // Show close button if opened manually
     });
 
     closeAuthModal.addEventListener("click", () => {
-        authModal.classList.add("hidden");
-        authError.classList.add("hidden");
+        if (currentUser) {
+            authModal.classList.add("hidden");
+            authError.classList.add("hidden");
+        }
     });
 
     toggleAuthModeBtn.addEventListener("click", () => {
@@ -201,6 +213,9 @@ document.addEventListener("DOMContentLoaded", () => {
             localStorage.setItem("selfrag_user", JSON.stringify(currentUser));
             updateUserUI();
             authModal.classList.add("hidden");
+            document.querySelector(".app-container").style.filter = "none";
+            document.querySelector(".app-container").style.pointerEvents = "auto";
+            
             authUsername.value = "";
             authPassword.value = "";
 
