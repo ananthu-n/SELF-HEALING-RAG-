@@ -1,4 +1,5 @@
 import json
+import os
 import re
 from app.llm.client import OllamaClient
 from app.llm.models import GenerationRequest
@@ -62,9 +63,11 @@ Generated Answer
 
         logger.info("Running grounding evaluation...")
 
+        _default_model = os.getenv("GROQ_MODEL", getattr(settings.llm, "model", "llama-3.3-70b-versatile"))
         gen_req = GenerationRequest(
-            prompt=GROUNDING_SYSTEM_PROMPT,
+            system_prompt=GROUNDING_SYSTEM_PROMPT,
             user_prompt=user_prompt,
+            model=_default_model,
             temperature=0.0,
         )
 

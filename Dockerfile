@@ -27,8 +27,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY --from=builder /install /usr/local
 COPY . /app
 
-# Create data directories
-RUN mkdir -p data/qdrant data
+# Create data directories and ensure they are writable
+RUN mkdir -p data/qdrant data/bm25 data/raw_pdfs && chmod -R 777 data/
 
 EXPOSE 8000
 
