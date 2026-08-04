@@ -561,8 +561,39 @@ body {
 .loading-card {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 20px;
-    padding: 30px;
+    padding: 24px 30px;
+}
+
+.loading-main-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex: 1;
+}
+
+.cancel-btn {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: var(--danger);
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cancel-btn:hover {
+    background: var(--danger);
+    color: white;
+    border-color: var(--danger);
+    box-shadow: 0 0 12px rgba(239, 68, 68, 0.4);
 }
 
 .spinner {

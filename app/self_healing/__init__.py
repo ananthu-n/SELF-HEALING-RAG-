@@ -1,2 +1,3 @@
 from app.self_healing.controller import SelfHealingController
+from app.self_healing.graph_controller import LangGraphSelfHealingController
 from app.self_healing.query_rewriter import QueryRewriter

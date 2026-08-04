@@ -36,7 +36,8 @@ class QueryRewriter:
             "1. Output ONLY ONE natural scientific query phrase (max 12 words).\n"
             "2. DO NOT output comma-separated keyword lists or word dumps (e.g. NEVER write 'term1, term2, term3').\n"
             "3. DO NOT output conversational sentences or explanatory claims.\n"
-            "4. Preserve the user's intent (definition, comparison, or mechanism explanation)."
+            "4. Preserve the user's intent (definition, comparison, or mechanism explanation).\n"
+            "5. DO NOT drift or pivot to unrelated subjects mentioned in the Failure Reason. Keep the search query strictly focused on the core subject of the Original Question."
         )
 
         user_prompt = (

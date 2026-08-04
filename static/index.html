@@ -176,11 +176,19 @@
 
             <!-- Loading Spinner -->
             <div id="loadingState" class="card loading-card hidden">
-                <div class="spinner"></div>
-                <div class="loading-text">
-                    <h4 id="loadingStep">Analyzing Query & Intent...</h4>
-                    <p id="loadingSub">Checking Qdrant Dense Vector Store & BM25 Sparse Index...</p>
+                <div class="loading-main-wrapper">
+                    <div class="spinner"></div>
+                    <div class="loading-text">
+                        <h4 id="loadingStep">Analyzing Query & Intent...</h4>
+                        <p id="loadingSub">Checking Qdrant Dense Vector Store & BM25 Sparse Index...</p>
+                    </div>
                 </div>
+                <button type="button" id="cancelBtn" class="cancel-btn">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 6px; vertical-align: middle;">
+                        <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                    </svg>
+                    <span>Stop Run</span>
+                </button>
             </div>
 
             <!-- Answer Display Container -->

@@ -33,12 +33,37 @@ class QueryEnhancer:
         self.llm = LLMService()
 
     def enhance(self, query: str) -> EnhancedQuery:
-        intent = IntentDetector.detect(query)
-        logger.info(f"Query Processing: Query='{query}' | Detected Intent={intent.value.upper()}")
+        # Step 0: Query Normalization (Typo / Spelling correction)
+        normalized_query = query
+        try:
+            normalization_prompt = (
+                "You are an expert search query optimizer. "
+                "Your job is to fix any spelling mistakes, typos, or grammatical errors in the user's search query (especially technical names, libraries, frameworks), "
+                "and output the corrected, clean version of the query. "
+                "Do NOT add any explanation, commentary, or extra words. Output ONLY the corrected query. "
+                "If the query is already correct, output it exactly as is."
+            )
+            resp = self.llm.complete(
+                system_prompt=normalization_prompt,
+                user_prompt=query,
+                temperature=0.0,
+            )
+            cleaned = resp.answer.strip().replace('"', '').replace("'", '')
+            # Clean up trailing periods if LLM added any
+            if cleaned.endswith("."):
+                cleaned = cleaned[:-1]
+            if cleaned and cleaned.lower() != query.lower():
+                logger.info(f"Query normalized: '{query}' -> '{cleaned}'")
+                normalized_query = cleaned
+        except Exception as err:
+            logger.warning(f"Query normalization failed: {err}")
 
-        extracted_topic = TopicExtractor.extract_topic(query)
+        intent = IntentDetector.detect(normalized_query)
+        logger.info(f"Query Processing: Query='{normalized_query}' | Detected Intent={intent.value.upper()}")
+
+        extracted_topic = TopicExtractor.extract_topic(normalized_query)
         hypothetical_doc = None
-        sub_queries = [query]
+        sub_queries = [normalized_query]
 
         # Check HyDE Gating
         use_hyde = self.enable_hyde and IntentDetector.should_use_hyde(intent)

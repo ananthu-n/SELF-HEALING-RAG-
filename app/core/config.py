@@ -71,6 +71,7 @@ class SelfHealingConfig(BaseModel):
     enabled: bool
     max_retries: int
     confidence_threshold: float
+    use_langgraph: bool = False
 
 class Settings(BaseModel):
     project: ProjectConfig

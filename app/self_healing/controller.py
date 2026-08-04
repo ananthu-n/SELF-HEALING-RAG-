@@ -37,10 +37,18 @@ class SelfHealingController:
         self.failure_analyzer = FailureAnalyzer()
         self.dynamic_acquisitor = DynamicKnowledgeAcquisitor(max_results=10, top_k_download=3)
 
-    def answer(self, query: str, search_scope: str = "hybrid") -> SelfHealingState:
+    def answer(self, query: str, search_scope: str = "hybrid", session_id: str | None = None) -> SelfHealingState:
+        from app.core.cancellation import CancellationManager
+
+        def check_cancel():
+            if session_id and CancellationManager.is_cancelled(session_id):
+                raise InterruptedError("Execution stopped by user.")
+
         logger.info("=" * 80)
         logger.info(f"Starting Self-Healing Research Assistant Pipeline (Scope: {search_scope})")
         logger.info("=" * 80)
+
+        check_cancel()
 
         # Step 1: Query Enhancement Layer (Topic Extraction, HyDE, Decomposition)
         enhanced_query = self.query_enhancer.enhance(query)
@@ -52,6 +60,7 @@ class SelfHealingController:
         )
 
         while state.retry_count < settings.self_healing.max_retries:
+            check_cancel()
             logger.info(f"Self-Healing Execution Cycle [{state.retry_count + 1}/{settings.self_healing.max_retries}]")
 
             plan = self.healing_planner.plan(state)
@@ -64,6 +73,7 @@ class SelfHealingController:
 
             # Strategy Action A: Search arXiv for missing knowledge (only if scope permits arXiv)
             if search_scope != "custom_only" and (plan.retrieval_strategy == RetrievalStrategy.SEARCH_ARXIV or (state.retry_count > 0 and not state.retrieval_result)):
+                check_cancel()
                 logger.info("Executing Dynamic Knowledge Acquisition on arXiv...")
                 try:
                     acquired_count = self.dynamic_acquisitor.acquire(enhanced_query.extracted_topic)
@@ -73,6 +83,7 @@ class SelfHealingController:
 
             # Strategy Action B: Search Query Keyword Expansion
             if plan.rewrite_query:
+                check_cancel()
                 search_terms = self.query_rewriter.rewrite(
                     query=plan.query,
                     reason=plan.reason,
@@ -82,6 +93,7 @@ class SelfHealingController:
                 plan.query = search_terms
                 logger.info(f"Search Query Terms: {search_terms}")
 
+            check_cancel()
             # Execute RAG pass (Hybrid Retrieval + Reranking + Generation)
             pipeline_result = self.pipeline.answer(
                 query=plan.query,
@@ -97,17 +109,20 @@ class SelfHealingController:
             state.prompt_result = pipeline_result.prompt
             state.last_generation = pipeline_result.generation
 
+            check_cancel()
             # CRAG Validation Layer
             crag_res = self.crag_validator.validate(
                 query=plan.query,
                 reranked_chunks=pipeline_result.rerank.reranked_chunks,
             )
             if crag_res.requires_external_search and search_scope != "custom_only":
+                check_cancel()
                 logger.warning(f"CRAG State {crag_res.state.value.upper()}: Triggering dynamic arXiv search for '{enhanced_query.extracted_topic}'...")
                 try:
                     acquired = self.dynamic_acquisitor.acquire(enhanced_query.extracted_topic)
                     logger.info(f"CRAG Acquisition indexed {acquired} fresh paper(s).")
                     if acquired > 0:
+                        check_cancel()
                         logger.info("Re-running RAG pipeline with freshly acquired evidence...")
                         pipeline_result = self.pipeline.answer(
                             query=plan.query,
@@ -124,6 +139,7 @@ class SelfHealingController:
                 except Exception as err:
                     logger.error(f"CRAG Acquisition failed: {err}")
 
+            check_cancel()
             # Grounding Evaluation Layer
             grounding = self.evaluator.evaluate(
                 GroundingRequest(

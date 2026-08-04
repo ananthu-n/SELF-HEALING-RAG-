@@ -49,6 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const uploadStatus = document.getElementById("uploadStatus");
 
     let selectedFile = null;
+    let activeAbortController = null;
 
     function handleFileSelection(file) {
         if (!file) return;
@@ -276,6 +277,24 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
+    const cancelBtn = document.getElementById("cancelBtn");
+    if (cancelBtn) {
+        cancelBtn.addEventListener("click", () => {
+            if (activeAbortController) {
+                activeAbortController.abort();
+                // Send background cancellation notification to backend
+                fetch("/api/query/cancel", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${currentUser?.api_key || ""}`
+                    },
+                    body: JSON.stringify({ session_id: currentSessionId })
+                }).catch(e => console.error("Failed to notify backend of cancellation:", e));
+            }
+        });
+    }
+
     // Handle Query Form Submit
     queryForm.addEventListener("submit", async (e) => {
         e.preventDefault();
@@ -286,6 +305,9 @@ document.addEventListener("DOMContentLoaded", () => {
         submitBtn.disabled = true;
         loadingState.classList.remove("hidden");
         resultContainer.classList.add("hidden");
+
+        activeAbortController = new AbortController();
+        const signal = activeAbortController.signal;
 
         try {
             const response = await fetch("/api/query", {
@@ -301,7 +323,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     session_id: currentSessionId,
                     user_id: currentUser.user_id,
                     search_scope: currentScope
-                })
+                }),
+                signal: signal
             });
 
             if (!response.ok) {
@@ -314,10 +337,15 @@ document.addEventListener("DOMContentLoaded", () => {
             fetchSessions();
             fetchTelemetry();
         } catch (err) {
-            alert("Error executing query: " + err.message);
+            if (err.name === "AbortError") {
+                console.log("Query cancelled by user on frontend.");
+            } else {
+                alert("Error executing query: " + err.message);
+            }
         } finally {
             submitBtn.disabled = false;
             loadingState.classList.add("hidden");
+            activeAbortController = null;
         }
     });
 

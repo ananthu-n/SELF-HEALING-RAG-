@@ -7,8 +7,11 @@
 
 set -e
 
+# Add absolute path to PATH so script can find gcloud reliably
+export PATH="/media/ananthu/b1c3864e-aa30-43e6-b791-dab2cdd27b16/google-cloud-sdk/bin:$PATH"
+
 # Configuration (Customize as needed)
-PROJECT_ID=$(gcloud config get-value project 2>/dev/null || echo "")
+PROJECT_ID="ananthu007"
 REGION="us-central1"
 SERVICE_NAME="self-healing-rag"
 IMAGE_TAG="${REGION}-docker.pkg.dev/${PROJECT_ID}/selfrag-repo/${SERVICE_NAME}:latest"

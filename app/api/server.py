@@ -88,8 +88,15 @@ _controller = None
 def get_controller():
     global _controller
     if _controller is None:
-        from app.self_healing.controller import SelfHealingController
-        _controller = SelfHealingController()
+        from app.core.config import settings
+        if settings.self_healing.use_langgraph:
+            logger.info("Initializing LangGraph-based Self-Healing Controller...")
+            from app.self_healing.graph_controller import LangGraphSelfHealingController
+            _controller = LangGraphSelfHealingController()
+        else:
+            logger.info("Initializing Standard Python Self-Healing Controller...")
+            from app.self_healing.controller import SelfHealingController
+            _controller = SelfHealingController()
     return _controller
 
 
@@ -110,6 +117,10 @@ class QueryRequest(BaseModel):
     session_id: Optional[str] = None
     user_id: Optional[str] = "demo_user"
     search_scope: Optional[str] = "hybrid"  # "hybrid", "custom_only", or "arxiv_only"
+
+
+class CancelRequest(BaseModel):
+    session_id: str
 
 
 class QueryResponse(BaseModel):
@@ -179,8 +190,18 @@ def login_user(req: AuthRequest):
     )
 
 
+@app.post("/api/query/cancel")
+def cancel_query(req: CancelRequest):
+    from app.core.cancellation import CancellationManager
+    CancellationManager.cancel(req.session_id)
+    return {"status": "success", "message": f"Cancellation request sent for session {req.session_id}"}
+
+
+import asyncio
+from fastapi.concurrency import run_in_threadpool
+
 @app.post("/api/query", response_model=QueryResponse)
-def handle_query(
+async def handle_query(
     req: QueryRequest,
     request: Request,
     x_user_id: Optional[str] = Header(None, alias="X-User-ID"),
@@ -200,9 +221,27 @@ def handle_query(
     logger.info(f"API Request received [User: {user_id} | Session: {session_id} | Scope: {scope}]: '{req.query}'")
     start_t = time.perf_counter()
 
+    stop_event = asyncio.Event()
+
+    async def monitor_disconnection():
+        from app.core.cancellation import CancellationManager
+        while not stop_event.is_set():
+            if await request.is_disconnected():
+                logger.warning(f"Client disconnected. Sending cancellation signal for session: {session_id}")
+                CancellationManager.cancel(session_id)
+                break
+            try:
+                await asyncio.sleep(0.2)
+            except asyncio.CancelledError:
+                break
+
+    monitor_task = asyncio.create_task(monitor_disconnection())
+
     try:
         controller = get_controller()
-        state = controller.answer(req.query, search_scope=scope)
+        state = await run_in_threadpool(
+            controller.answer, req.query, search_scope=scope, session_id=session_id
+        )
         elapsed = time.perf_counter() - start_t
 
 
@@ -283,9 +322,20 @@ def handle_query(
             healing_history=history_data,
             latency_sec=round(elapsed, 2),
         )
+    except InterruptedError as err:
+        logger.warning(f"Query execution cancelled: {err}")
+        raise HTTPException(status_code=499, detail="Query execution cancelled by user.")
     except Exception as err:
         logger.error(f"API Error processing query: {err}")
         raise HTTPException(status_code=500, detail=str(err))
+    finally:
+        stop_event.set()
+        try:
+            await monitor_task
+        except Exception:
+            pass
+        from app.core.cancellation import CancellationManager
+        CancellationManager.clear(session_id)
 
 
 @app.get("/api/sessions")
