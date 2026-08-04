@@ -12,7 +12,7 @@ pinned: false
 
 A research assistant that retrieves, generates, and **self-corrects**. When the system detects that its answer isn't well-grounded in the source material, it diagnoses the failure mode, rewrites the query, adjusts retrieval parameters, acquires new knowledge if needed, and tries again — automatically.
 
-Built with FastAPI, Qdrant, BM25, CrossEncoder reranking, and Groq (LLaMA 3.3 70B).
+Built with LangGraph state-machine orchestration, FastAPI, Qdrant, BM25, CrossEncoder reranking, and Groq (LLaMA 3.3 70B). Includes real-time asynchronous request cancellation ("Stop Run") mid-cycle.
 
 ![Python](https://img.shields.io/badge/python-3.11+-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
@@ -184,7 +184,8 @@ Additional signals override these defaults:
 - Retrieval memory prevents redundant evidence across retry cycles
 - Knowledge coverage estimator checks evidence sufficiency before generation
 
-**Application layer**
+**Application layer & UX**
+- Real-time asynchronous query cancellation ("Stop Run" button) powered by `CancellationManager` and background disconnection monitoring
 - Multi-user auth (registration, login, SHA-256 password hashing, API key generation)
 - Per-user session history with isolated query logs
 - SQLite-backed telemetry: query count, grounding pass rate, avg latency, avg confidence, retry success rate, failure distribution
@@ -195,6 +196,8 @@ Additional signals override these defaults:
 | Component | Technology |
 |---|---|
 | API server | FastAPI + Uvicorn |
+| Orchestration | LangGraph State Machine (or procedural fallback) |
+| Cancellation | Thread-safe `CancellationManager` + Client Disconnect Monitor |
 | LLM inference | Groq API (LLaMA 3.3 70B) / Ollama (local fallback) |
 | Embeddings | BAAI/bge-large-en-v1.5 (1024-dim) |
 | Vector store | Qdrant (local persistent mode) |
@@ -279,6 +282,7 @@ tests/                Unit and integration tests
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | POST | `/api/query` | Run a query through the self-healing pipeline |
+| POST | `/api/query/cancel` | Cancel an active long-running query session |
 | POST | `/api/upload` | Upload and index a document |
 | POST | `/api/auth/register` | Create a user account |
 | POST | `/api/auth/login` | Log in |
